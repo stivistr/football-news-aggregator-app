@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'football_news_aggregator.accounts',
     'football_news_aggregator.news',
+    'django_countries',
 
 ]
 

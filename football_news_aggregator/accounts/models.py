@@ -1,8 +1,12 @@
 from django.core.validators import MinLengthValidator
 from django.db import models
-from django.contrib.auth import models as auth_models
+from django.contrib.auth import models as auth_models, get_user_model
+from django_countries.fields import CountryField
+from football_news_aggregator.news.models import NewsArticle
 from football_news_aggregator.common.validators import NameContainsOnlyLettersValidator, FirstCharMustBeLetterValidator
 from football_news_aggregator.accounts.managers import FootballUserManager
+
+UserModel = get_user_model()
 
 
 class FootballNewsUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
@@ -45,6 +49,32 @@ class Profile(models.Model):
                      NameContainsOnlyLettersValidator)]
     )
 
+    email = models.EmailField(
+        null=True,
+        blank=True,
+        unique=True,
+    )
+
+    profile_picture = models.ImageField()
+
+    country = CountryField()
+
+    user = models.OneToOneField(
+        UserModel,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
 
 class Bookmark(models.Model):
-    pass
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+    )
+
+    news_article = models.ForeignKey(
+        NewsArticle,
+        on_delete=models.CASCADE,
+    )
+
+    timestamp = models.DateTimeField(auto_now_add=True)
