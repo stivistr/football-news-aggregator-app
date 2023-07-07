@@ -1,8 +1,10 @@
-from django.contrib.auth import base_user as auth_base
+from django.contrib.auth import models as auth_models
 from django.contrib.auth.hashers import make_password
 
 
-class FootballUserManager(auth_base.BaseUserManager):
+class FootballUserManager(auth_models.BaseUserManager):
+    use_in_migrations = True
+
     def _create_user(self, username, password, **extra_fields):
         if not username:
             raise ValueError('The given username must be set')

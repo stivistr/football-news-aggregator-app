@@ -1,12 +1,11 @@
 from django.core.validators import MinLengthValidator
-from django.db import models
-from django.contrib.auth import models as auth_models, get_user_model
 from django_countries.fields import CountryField
-from football_news_aggregator.news.models import NewsArticle
-from football_news_aggregator.common.validators import NameContainsOnlyLettersValidator, FirstCharMustBeLetterValidator
-from football_news_aggregator.accounts.managers import FootballUserManager
 
-UserModel = get_user_model()
+from football_news_aggregator.accounts.managers import FootballUserManager
+from football_news_aggregator.news.models import NewsArticle
+from football_news_aggregator.common.validators import validate_only_letters
+from django.db import models
+from django.contrib.auth import models as auth_models
 
 
 class FootballNewsUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
@@ -37,16 +36,14 @@ class Profile(models.Model):
 
     first_name = models.CharField(
         max_length=FIRST_NAME_MAX_LENGTH,
-        validators=[(MinLengthValidator(FIRST_NAME_MIN_LENGTH),
-                     FirstCharMustBeLetterValidator,
-                     NameContainsOnlyLettersValidator)]
+        validators=(MinLengthValidator(FIRST_NAME_MIN_LENGTH),
+                    validate_only_letters),
     )
 
     last_name = models.CharField(
         max_length=LAST_NAME_MAX_LENGTH,
-        validators=[(MinLengthValidator(LAST_NAME_MIN_LENGTH),
-                     FirstCharMustBeLetterValidator,
-                     NameContainsOnlyLettersValidator)]
+        validators=(MinLengthValidator(LAST_NAME_MIN_LENGTH),
+                    validate_only_letters),
     )
 
     email = models.EmailField(
@@ -55,12 +52,10 @@ class Profile(models.Model):
         unique=True,
     )
 
-    profile_picture = models.ImageField()
-
     country = CountryField()
 
     user = models.OneToOneField(
-        UserModel,
+        FootballNewsUser,
         on_delete=models.CASCADE,
         primary_key=True,
     )
@@ -68,7 +63,7 @@ class Profile(models.Model):
 
 class Bookmark(models.Model):
     user = models.ForeignKey(
-        UserModel,
+        FootballNewsUser,
         on_delete=models.CASCADE,
     )
 
