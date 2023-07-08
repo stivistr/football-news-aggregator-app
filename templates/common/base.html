@@ -12,6 +12,7 @@
 <body>
 <div id="wrapper">
     <header>
+
         <!-- Navigation -->
         <a id="logo" href="{% url 'index' %}">
             <img id="logo-img" src="{% static 'images/logo.png' %}" alt="logo"/>
@@ -20,12 +21,12 @@
         <nav>
 
             <!-- If there is a user profile -->
-            {% if profile %}
+            {% if user %}
                 <div class="user">
                     <a href="">Dashboard</a>
                     <a href="">Search</a>
-                    <a href="">Profile</a>
-                    <a href="">Sign Out</a>
+                    <a href="">{{ request.user.username }}</a>
+                    <a href="{% url 'index' %}">Sign Out</a>
                 </div>
             {% else %}
                 <!-- If user profile has NOT been created -->
