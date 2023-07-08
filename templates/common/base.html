@@ -16,17 +16,17 @@
         <!-- Navigation -->
         <a id="logo" href="{% url 'index' %}">
             <img id="logo-img" src="{% static 'images/logo.png' %}" alt="logo"/>
-        </a>
 
+        </a>
+        <h1>Football News</h1>
         <nav>
 
             <!-- If there is a user profile -->
-            {% if user %}
+            {% if request.user.is_authenticated %}
                 <div class="user">
-                    <a href="">Dashboard</a>
                     <a href="">Search</a>
                     <a href="">{{ request.user.username }}</a>
-                    <a href="{% url 'index' %}">Sign Out</a>
+                    <a href="{% url 'logout_user' %}">Sign Out</a>
                 </div>
             {% else %}
                 <!-- If user profile has NOT been created -->
