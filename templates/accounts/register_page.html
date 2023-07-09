@@ -3,14 +3,25 @@
 {% block maincontent %}
     <div class="login-register-div">
         <div class="login-register-box">
-            <h1>Football News</h1>
-
 
             <form action="{% url 'register_user' %}" method="post">
                 {% csrf_token %}
-                {{ form.username }}
-                {{ form.password1 }}
-                {{ form.password2 }}
+
+
+                <ul>
+                    <li>
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                    </li>
+                    <li>
+                        {{ form.password1.label_tag }}
+                        {{ form.password1 }}
+                    </li>
+                    <li>
+                        {{ form.password2.label_tag }}
+                        {{ form.password2 }}
+                    </li>
+                </ul>
 
                 <input type="hidden" value="{{ next }}" name="next"/>
 

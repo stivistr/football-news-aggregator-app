@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic as views
 from django.contrib.auth import views as auth_views, login
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from football_news_aggregator.accounts.forms import CreateUserForm, CreateProfileForm
+from football_news_aggregator.accounts.models import Profile
 
 
 def index(request):
@@ -20,6 +21,9 @@ class RegisterUserView(views.CreateView):
 
         login(self.request, self.object)
 
+        profile = Profile(user=self.object)
+        profile.save()
+
         return result
 
 
@@ -31,11 +35,20 @@ class LogoutUserView(auth_views.LogoutView):
     pass
 
 
-class CreateProfileView(views.CreateView):
-    template_name = 'accounts/create_profile.html'
+class UpdateProfileView(LoginRequiredMixin, views.UpdateView):
+    template_name = 'accounts/edit_profile.html'
     form_class = CreateProfileForm
+    success_url = reverse_lazy('index')
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.get_object()
+        return kwargs
 
     def form_valid(self, form):
-        result = super().form_valid(form)
+        form.instance.user = self.request.user
 
-        return result
+        return super().form_valid(form)
