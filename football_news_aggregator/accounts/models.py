@@ -54,6 +54,14 @@ class Profile(models.Model):
 
     country = CountryField()
 
+    profile_picture = models.ImageField()
+
+    favourite_team = models.CharField(
+        max_length=30,
+        validators=(MinLengthValidator(2),
+                    validate_only_letters),
+    )
+
     user = models.OneToOneField(
         FootballNewsUser,
         on_delete=models.CASCADE,

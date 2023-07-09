@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic as views
 from django.contrib.auth import views as auth_views, login
-from football_news_aggregator.accounts.forms import CreateUserForm
+
+from football_news_aggregator.accounts.forms import CreateUserForm, CreateProfileForm
 
 
 def index(request):
@@ -28,3 +29,13 @@ class LoginUserView(auth_views.LoginView):
 
 class LogoutUserView(auth_views.LogoutView):
     pass
+
+
+class CreateProfileView(views.CreateView):
+    template_name = 'accounts/create_profile.html'
+    form_class = CreateProfileForm
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+
+        return result
