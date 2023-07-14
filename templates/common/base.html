@@ -24,7 +24,7 @@
         <nav>
 
             <!-- If there is a user profile -->
-          <form class="d-flex me-3">
+          <form class="d-flex me-3" enctype="multipart/form-data">
                         <input class="form-control me-sm-2" type="search" placeholder="Search">
                         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                     </form>
@@ -40,6 +40,9 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'logout_user' %}">Sign Out</a>
                         </div>
+                        {% if request.user.profile.profile_picture %}
+                        <img src="{{ request.user.profile.profile_picture.url }}" alt="Profile Picture">
+                            {% endif %}
                     </div>
                 </div>
             {% else %}
