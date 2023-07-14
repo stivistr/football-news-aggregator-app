@@ -1,10 +1,13 @@
 from django.shortcuts import render
+from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.views import generic as views
-from django.contrib.auth import views as auth_views, login
+from django.contrib.auth import views as auth_views, login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from football_news_aggregator.accounts.forms import CreateUserForm, CreateProfileForm
 from football_news_aggregator.accounts.models import Profile
+
+UserModel = get_user_model()
 
 
 def index(request):
@@ -52,3 +55,22 @@ class UpdateProfileView(LoginRequiredMixin, views.UpdateView):
         form.instance.user = self.request.user
 
         return super().form_valid(form)
+
+
+class ProfileDetailsView(views.DetailView):
+    template_name = 'common/base.html'
+    model = UserModel
+
+    profile_picture = static('images/image_person.jpg')
+
+    def get_profile_picture(self):
+        if self.object.profile_picture is not None:
+            return self.object.profile_picture
+        return self.profile_picture
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['profile_picture'] = self.get_profile_picture()
+
+        return context

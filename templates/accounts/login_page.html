@@ -5,7 +5,7 @@
         <div class="login-register-box">
 
 
-            <form action="{% url 'login_user' %}" method="post">
+            <form action="{% url 'login_user' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.username }}
                 {{ form.password }}
