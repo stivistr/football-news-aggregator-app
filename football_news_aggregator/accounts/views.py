@@ -58,19 +58,23 @@ class UpdateProfileView(LoginRequiredMixin, views.UpdateView):
 
 
 class ProfileDetailsView(views.DetailView):
-    template_name = 'common/base.html'
+    template_name = 'accounts/details_profile.html'
     model = UserModel
 
-    profile_picture = static('images/image_person.jpg')
+    #profile_picture = static('images/image_person.jpg')
 
-    def get_profile_picture(self):
-        if self.object.profile_picture is not None:
-            return self.object.profile_picture
-        return self.profile_picture
+    #def get_profile_picture(self):
+        #if self.object.profile_picture is not None:
+            #return self.object.profile_picture
+        #return self.profile_picture
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    #def get_context_data(self, **kwargs):
+        #context = super().get_context_data(**kwargs)
 
-        context['profile_picture'] = self.get_profile_picture()
+        #context['profile_picture'] = self.get_profile_picture()
 
-        return context
+        #return context
+
+
+class DeleteProfileView(views.DeleteView):
+    template_name = 'accounts/delete_profile.html'
