@@ -1,6 +1,6 @@
 from django.urls import path, include
 from football_news_aggregator.accounts.views import index, RegisterUserView, LoginUserView, LogoutUserView, \
-    UpdateProfileView, ProfileDetailsView, DeleteProfileView
+    UpdateProfileView, ProfileDetailsView, delete_profile
 
 urlpatterns = [
     path('', index, name='index'),
@@ -10,6 +10,6 @@ urlpatterns = [
     path('profile/<int:pk>/', include([
         path('', ProfileDetailsView.as_view(), name='details_profile'),
         path('edit/', UpdateProfileView.as_view(), name='edit_profile'),
-        path('delete/', DeleteProfileView.as_view(), name='delete_profile'),
+        path('delete/', delete_profile, name='delete_profile'),
     ]))
 ]

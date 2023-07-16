@@ -1,0 +1,61 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div id="wrapper">
+        <header>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+            <!-- Navigation -->
+            <a id="logo" href="{% url 'index' %}">
+                <img id="logo-img" src="{% static 'images/logo.png' %}" alt="logo"/>
+
+            </a>
+            <h1>Football News</h1>
+            <nav>
+
+                <!-- If there is a user profile -->
+                <form class="d-flex me-3" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input class="form-control me-sm-2" type="search" placeholder="Search">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                {% if request.user.is_authenticated %}
+                    <div class="user d-flex align-items-center">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                {% if request.user.profile.profile_picture %}
+                                    <img src="{{ profile_picture }}" alt="Profile Picture">
+                                {% else %}
+                                    <i class="fa-solid fa-user fa-lg"></i>
+
+                                {% endif %}
+                                {{ request.user.username }}
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'details_profile' request.user.profile.pk %}">Profile
+                                    Information</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout_user' %}">Sign Out</a>
+                            </div>
+
+
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- If user profile has NOT been created -->
+
+                    <div class="guest">
+                    <a href="{% url 'login_user' %}">Sign In</a>
+                    <a href="{% url 'register_user' %}">Register</a>
+                {% endif %}
+                </div>
+
+            </nav>
+        </header>
+
+        {% block maincontent %}
+        {% endblock %}
+
+    </div>
+{% endblock %}

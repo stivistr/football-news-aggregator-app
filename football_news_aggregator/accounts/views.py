@@ -1,15 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.views import generic as views
-from django.contrib.auth import views as auth_views, login, get_user_model
+from django.contrib.auth import views as auth_views, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from football_news_aggregator.accounts.forms import CreateUserForm, UpdateProfileForm
+from football_news_aggregator.accounts.forms import CreateUserForm, UpdateProfileForm, DeleteProfileForm
 from football_news_aggregator.accounts.models import Profile
 
 
 def index(request):
-    return render(request, template_name='common/base.html')
+    return render(request, template_name='common/home_page.html')
 
 
 class RegisterUserView(views.CreateView):
@@ -72,5 +72,20 @@ class ProfileDetailsView(views.DetailView):
         return context
 
 
-class DeleteProfileView(views.DeleteView):
-    template_name = 'accounts/delete_profile.html'
+def delete_profile(request, pk):
+    profile = Profile.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = DeleteProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = DeleteProfileForm(instance=profile)
+
+    context = {
+        'form': form,
+        'profile': profile,
+    }
+
+    return render(request, template_name='accounts/delete_profile.html', context=context)

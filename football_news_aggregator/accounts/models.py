@@ -57,6 +57,7 @@ class Profile(models.Model):
     profile_picture = models.ImageField(
         blank=True,
         null=True,
+        upload_to='pictures/',
     )
 
     favourite_team = models.CharField(
