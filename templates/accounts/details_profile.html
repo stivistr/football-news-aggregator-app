@@ -1,34 +1,24 @@
 {% extends 'common/base.html' %}
 
 {% block maincontent %}
-    <div class="login-register-div">
-        <div class="login-register-box">
-            <h1>Football News</h1>
+
+    <ul>
+        <p><img src="{{ profile_picture }}" alt="Profile Picture"></p>
+        <p>{{ object.first_name }}</p>
+        <p>{{ object.last_name }}</p>
+        <p>{{ object.email }}</p>
+        <p>{{ object.country }}</p>
+        <p>{{ object.favourite_team }}</p>
 
 
-            <form action="{% url 'details_profile' request.user.pk %}" method="post">
-                {% csrf_token %}
+    </ul>
+    </div>
+    </div>
 
-                <ul>
-                    {% for field in form %}
-                        <li>
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.help_text %}
-                                <small>{{ field.help_text }}</small>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <div class="error-message">{{ error }}</div>
-                            {% endfor %}
-                        </li>
-                    {% endfor %}
-                </ul>
+    <input type="hidden" value="{{ next }}" name="next"/>
 
+    <p><button type="submit">Save Changes</button></p>
 
-                <input type="hidden" value="{{ next }}" name="next"/>
-
-                <button type="submit">Save Changes</button>
-            </form>
-        </div>
+    </div>
     </div>
 {% endblock %}

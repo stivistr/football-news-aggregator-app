@@ -4,10 +4,8 @@ from django.urls import reverse_lazy
 from django.views import generic as views
 from django.contrib.auth import views as auth_views, login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from football_news_aggregator.accounts.forms import CreateUserForm, CreateProfileForm
+from football_news_aggregator.accounts.forms import CreateUserForm, UpdateProfileForm
 from football_news_aggregator.accounts.models import Profile
-
-UserModel = get_user_model()
 
 
 def index(request):
@@ -40,7 +38,7 @@ class LogoutUserView(auth_views.LogoutView):
 
 class UpdateProfileView(LoginRequiredMixin, views.UpdateView):
     template_name = 'accounts/edit_profile.html'
-    form_class = CreateProfileForm
+    form_class = UpdateProfileForm
     success_url = reverse_lazy('index')
 
     def get_object(self, queryset=None):
@@ -59,21 +57,19 @@ class UpdateProfileView(LoginRequiredMixin, views.UpdateView):
 
 class ProfileDetailsView(views.DetailView):
     template_name = 'accounts/details_profile.html'
-    model = UserModel
+    model = Profile
 
-    #profile_picture = static('images/image_person.jpg')
+    def get_context_data(self, **kwargs):
+        profile_picture = static('images/image_person.jpg')
+        profile = self.get_object()
 
-    #def get_profile_picture(self):
-        #if self.object.profile_picture is not None:
-            #return self.object.profile_picture
-        #return self.profile_picture
+        if self.object.profile_picture is not None:
+            profile_picture = self.object.profile_picture
 
-    #def get_context_data(self, **kwargs):
-        #context = super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context['profile_picture'] = profile_picture
 
-        #context['profile_picture'] = self.get_profile_picture()
-
-        #return context
+        return context
 
 
 class DeleteProfileView(views.DeleteView):

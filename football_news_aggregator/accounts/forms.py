@@ -12,7 +12,14 @@ class CreateUserForm(BootstrapFormMixin, auth_forms.UserCreationForm):
         fields = ('username', 'password1', 'password2')
 
 
-class CreateProfileForm(forms.ModelForm):
+class UpdateProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+        exclude = ['user']
+
+
+class ProfileDetailForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
