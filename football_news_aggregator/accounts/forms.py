@@ -28,8 +28,8 @@ class ProfileDetailForm(forms.ModelForm):
 
 class DeleteProfileForm(BootstrapFormMixin, DisabledFieldsFormMixin, forms.ModelForm):
     class Meta:
-        model = Profile
-        exclude = ['user', 'profile_picture']
+        model = UserModel
+        exclude = ['password2']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

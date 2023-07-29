@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.views import generic as views
-from django.contrib.auth import views as auth_views, login
+from django.contrib.auth import views as auth_views, login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from football_news_aggregator.accounts.forms import CreateUserForm, UpdateProfileForm, DeleteProfileForm
 from football_news_aggregator.accounts.models import Profile
+
+UserModel = get_user_model()
 
 
 def index(request):
@@ -63,8 +65,8 @@ class ProfileDetailsView(views.DetailView):
         profile_picture = static('images/image_person.jpg')
         profile = self.get_object()
 
-        if self.object.profile_picture is not None:
-            profile_picture = self.object.profile_picture
+        if profile.profile_picture is not None:
+            profile_picture = profile.profile_picture
 
         context = super().get_context_data(**kwargs)
         context['profile_picture'] = profile_picture
@@ -73,19 +75,19 @@ class ProfileDetailsView(views.DetailView):
 
 
 def delete_profile(request, pk):
-    profile = Profile.objects.get(pk=pk)
+    user = UserModel.objects.get(pk=pk)
 
     if request.method == 'POST':
-        form = DeleteProfileForm(request.POST, instance=profile)
+        form = DeleteProfileForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('index')
     else:
-        form = DeleteProfileForm(instance=profile)
+        form = DeleteProfileForm(instance=user)
 
     context = {
         'form': form,
-        'profile': profile,
+        'user': user,
     }
 
     return render(request, template_name='accounts/delete_profile.html', context=context)
