@@ -74,20 +74,9 @@ class ProfileDetailsView(views.DetailView):
         return context
 
 
-def delete_profile(request, pk):
-    user = UserModel.objects.get(pk=pk)
+class ProfileDeleteView(views.DeleteView):
+    template_name = 'accounts/delete_profile.html'
+    model = Profile
 
-    if request.method == 'POST':
-        form = DeleteProfileForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect('index')
-    else:
-        form = DeleteProfileForm(instance=user)
-
-    context = {
-        'form': form,
-        'user': user,
-    }
-
-    return render(request, template_name='accounts/delete_profile.html', context=context)
+    def get_success_url(self):
+        return reverse_lazy('index')
