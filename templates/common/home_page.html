@@ -32,10 +32,13 @@
                                 {% endif %}
                                 {{ request.user.username }}
                             </a>
+                        {% for article in articles %}
+                        {{ article }}
+                        {% endfor %}
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="{% url 'details_profile' request.user.profile.id %}">Profile
                                     Information</a>
-                                <a class="dropdown-item" href="{% url 'list_articles' %}">Articles</a>
+                                <a class="dropdown-item" href="{% url 'create_article' %}">Articles</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{% url 'logout_user' %}">Sign Out</a>
                             </div>
