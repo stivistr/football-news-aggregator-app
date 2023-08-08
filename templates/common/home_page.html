@@ -56,6 +56,17 @@
 
             </nav>
         </header>
+     <main>
+            <div class="article-list">
+                {% for article in articles %}
+                    <div class="article-box">
+                        <h2>{{ article.title }}</h2>
+                        <p>{{ article.content }}</p>
+                        <p>Publication Date: {{ article.publication_date }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </main>
 
         {% block maincontent %}
         {% endblock %}
