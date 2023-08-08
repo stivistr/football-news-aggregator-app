@@ -1,6 +1,5 @@
 from django.core.validators import MinLengthValidator
 from django_countries.fields import CountryField
-
 from football_news_aggregator.accounts.managers import FootballUserManager
 from football_news_aggregator.news.models import NewsArticle
 from football_news_aggregator.common.validators import validate_only_letters
@@ -84,9 +83,6 @@ class Bookmark(models.Model):
         on_delete=models.CASCADE,
     )
 
-    news_article = models.ForeignKey(
-        NewsArticle,
-        on_delete=models.CASCADE,
-    )
-
     timestamp = models.DateTimeField(auto_now_add=True)
+
+

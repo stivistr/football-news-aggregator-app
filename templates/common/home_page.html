@@ -32,9 +32,6 @@
                                 {% endif %}
                                 {{ request.user.username }}
                             </a>
-                        {% for article in articles %}
-                        {{ article }}
-                        {% endfor %}
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="{% url 'details_profile' request.user.profile.id %}">Profile
                                     Information</a>
@@ -46,6 +43,8 @@
 
                         </div>
                     </div>
+
+
                 {% else %}
                     <!-- If user profile has NOT been created -->
 
