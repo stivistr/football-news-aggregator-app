@@ -11,10 +11,8 @@ class CreateArticleView(views.CreateView):
     success_url = reverse_lazy('index')
 
     def form_valid(self, form):
-        if form.is_valid():
-            return super().form_valid(form)
-        else:
-            return self.form_invalid(form)
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 def article_list(request):

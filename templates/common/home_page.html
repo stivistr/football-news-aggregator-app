@@ -56,19 +56,28 @@
 
             </nav>
         </header>
-     <main>
-            <div class="article-list">
-                {% for article in articles %}
-                    <div class="article-box">
-                        <h2>{{ article.title }}</h2>
-                        <p>{{ article.content }}</p>
-                        <p>Publication Date: {{ article.publication_date }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-        </main>
 
         {% block maincontent %}
+         <div class="article-list">
+                <h2>All Articles</h2>
+                <ul>
+                    {% for article in articles %}
+                        <li>
+                            <form method="post" {% if request.user.is_authenticated %}class="article-form"{% endif %}>
+                                {% csrf_token %}
+                                {{ article.title }}
+                                {{ article.content }}
+                                {{ article.publication_date }}
+
+                                {% if request.user.is_authenticated %}
+                                    <button type="submit" {% if not request.user == article.author %}disabled{% endif %}>Edit</button>
+                                {% endif %}
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
         {% endblock %}
 
     </div>

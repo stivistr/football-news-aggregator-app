@@ -1,0 +1,33 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div id="wrapper">
+        <header>
+            <!-- ... your header code ... -->
+        </header>
+
+        {% block maincontent %}
+            <div class="article-list">
+                <h2>All Articles</h2>
+                <ul>
+                    {% for article in articles %}
+                        <li>
+                            <form method="post" {% if request.user.is_authenticated %}class="article-form"{% endif %}>
+                                {% csrf_token %}
+                                {{ article.title }}
+                                {{ article.content }}
+                                {{ article.publication_date }}
+
+                                {% if request.user.is_authenticated %}
+                                    <button type="submit" {% if not request.user == article.author %}disabled{% endif %}>Edit</button>
+                                {% endif %}
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endblock %}
+
+    </div>
+{% endblock %}
