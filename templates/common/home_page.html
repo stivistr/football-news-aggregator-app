@@ -58,26 +58,25 @@
         </header>
 
         {% block maincontent %}
-         <div class="article-list">
-                <h2>All Articles</h2>
-                <ul>
+  <div class="article-list">
+                <h2>Today's News</h2>
+                <div class="articles-container">
                     {% for article in articles %}
-                        <li>
+                        <div class="article-box">
                             <form method="post" {% if request.user.is_authenticated %}class="article-form"{% endif %}>
                                 {% csrf_token %}
-                                {{ article.title }}
-                                {{ article.content }}
-                                {{ article.publication_date }}
+                                <h3>{{ article.title }}</h3>
+                                <p>{{ article.content }}</p>
+                                <p>{{ article.publication_date }}</p>
 
                                 {% if request.user.is_authenticated %}
                                     <button type="submit" {% if not request.user == article.author %}disabled{% endif %}>Edit</button>
                                 {% endif %}
                             </form>
-                        </li>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
-
         {% endblock %}
 
     </div>
