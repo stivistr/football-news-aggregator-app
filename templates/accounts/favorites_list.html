@@ -1,0 +1,16 @@
+{% extends 'common/home_page.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>Your Favorites</h2>
+    <ul>
+        {% for favorite in favorites %}
+            <li>
+                <h3>{{ favorite.article.title }}</h3>
+                <p>{{ favorite.article.topic }}</p>
+                <p>{{ favorite.article.content }}</p>
+                <p>{{ favorite.article.publication_date }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

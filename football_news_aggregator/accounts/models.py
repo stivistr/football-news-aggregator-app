@@ -5,6 +5,8 @@ from football_news_aggregator.common.validators import validate_only_letters
 from django.db import models
 from django.contrib.auth import models as auth_models
 
+from football_news_aggregator.news.models import NewsArticle
+
 
 class FootballNewsUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     USERNAME_FIELD = 'username'
@@ -76,22 +78,14 @@ class Profile(models.Model):
         super().delete(*args, **kwargs)
 
 
-class NewsArticle(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    publication_date = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(
+class Bookmark(models.Model):
+    user = models.ForeignKey(
         FootballNewsUser,
         on_delete=models.CASCADE,
     )
 
-    def __str__(self):
-        return self.title
-
-
-class Bookmark(models.Model):
-    user = models.ForeignKey(
-        FootballNewsUser,
+    article = models.ForeignKey(
+        NewsArticle,
         on_delete=models.CASCADE,
     )
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.templatetags.static import static
 from django.urls import reverse_lazy
@@ -5,7 +6,8 @@ from django.views import generic as views
 from django.contrib.auth import views as auth_views, login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from football_news_aggregator.accounts.forms import CreateUserForm, UpdateProfileForm, DeleteProfileForm
-from football_news_aggregator.accounts.models import Profile
+from football_news_aggregator.accounts.models import Profile, Bookmark
+from football_news_aggregator.news.models import NewsArticle
 
 UserModel = get_user_model()
 
@@ -80,3 +82,21 @@ class ProfileDeleteView(views.DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('index')
+
+
+class BookmarkArticleView(views.View):
+    @login_required
+    def post(self, request, article_id):
+        user = request.user
+        article = NewsArticle.objects.get(pk=article_id)
+        bookmark, created = Bookmark.objects.get_or_create(user=user, article=article)
+        return redirect('article_list')
+
+
+class FavoritesListView(views.ListView):
+    template_name = 'accounts/favorites_list.html'
+    context_object_name = 'favorites'
+
+    @login_required
+    def get_queryset(self):
+        return Bookmark.objects.filter(user=self.request.user)
