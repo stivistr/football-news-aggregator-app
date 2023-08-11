@@ -58,7 +58,7 @@
         </header>
 
         {% block maincontent %}
-  <div class="article-list">
+            <div class="article-list">
                 <h2>Today's News</h2>
                 <div class="articles-container">
                     {% for article in articles %}
@@ -66,11 +66,14 @@
                             <form method="post" {% if request.user.is_authenticated %}class="article-form"{% endif %}>
                                 {% csrf_token %}
                                 <h3>{{ article.title }}</h3>
+                                <p>{{ article.topic }}</p>
                                 <p>{{ article.content }}</p>
                                 <p>{{ article.publication_date }}</p>
 
                                 {% if request.user.is_authenticated %}
-                                    <button type="submit" {% if not request.user == article.author %}disabled{% endif %}>Edit</button>
+                                    <button type="submit" {% if not request.user == article.author %}{% endif %}>
+                                        Comment
+                                    </button>
                                 {% endif %}
                             </form>
                         </div>
