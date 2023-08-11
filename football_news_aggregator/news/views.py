@@ -34,6 +34,8 @@ def add_comment_view(request, article_id):
             new_comment_instance.to_article = article
             new_comment_instance.save()
 
+            return redirect('index')
+
     context = {
         'article': article,
         'form': AddCommentForm(),

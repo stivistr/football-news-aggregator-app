@@ -20,6 +20,7 @@
         <form method="post" action="{% url 'add_comment' article_id=article.pk %}">
             {{ form }}
             {% csrf_token %}
+            <input type="hidden" value="{{ next }}" name="next"/>
             <button type="submit">Post</button>
         </form>
         <!-- End Add Comments Form -->

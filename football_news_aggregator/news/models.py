@@ -22,6 +22,6 @@ class NewsArticle(models.Model):
 class Comment(models.Model):
     comment_text = models.TextField(max_length=300, blank=False, null=False)
     date_time_of_publication = models.DateTimeField(auto_now_add=True)
-    to_article = models.ForeignKey(NewsArticle, on_delete=models.CASCADE,)
+    to_article = models.ForeignKey(NewsArticle, on_delete=models.CASCADE, )
 
 
