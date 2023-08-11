@@ -71,9 +71,7 @@
                                 <p>{{ article.publication_date }}</p>
 
                                 {% if request.user.is_authenticated %}
-                                    <button type="submit" {% if not request.user == article.author %}{% endif %}>
-                                        Comment
-                                    </button>
+                                    <a class="details-btn" href="{% url 'add_comment' article.id %}?next={{ next }}">Add Comment</a>
                                 {% endif %}
                             </form>
                         </div>

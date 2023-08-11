@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
-from football_news_aggregator.news.forms import CreateArticleForm
+from football_news_aggregator.news.forms import CreateArticleForm, AddCommentForm
 from football_news_aggregator.news.models import NewsArticle
 
 
@@ -22,3 +22,21 @@ def article_list(request):
     }
 
     return render(request, 'common/home_page.html', context)
+
+
+def add_comment_view(request, article_id):
+    article = NewsArticle.objects.get(pk=article_id)
+
+    if request.method == 'POST':
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            new_comment_instance = form.save(commit=False)
+            new_comment_instance.to_article = article
+            new_comment_instance.save()
+
+    context = {
+        'article': article,
+        'form': AddCommentForm(),
+    }
+
+    return render(request, template_name='common/add_comment.html', context=context)

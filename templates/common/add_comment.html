@@ -1,0 +1,31 @@
+{% extends 'common/home_page.html' %}
+
+{% block maincontent %}
+    <div class="article-details">
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.topic }}</p>
+        <p>{{ article.content }}</p>
+        <p>{{ article.publication_date }}</p>
+    </div>
+
+    <div class="addComments">
+        <!-- Display article details in a form with disabled boxes -->
+        <form>
+            <input type="text" name="title" value="{{ article.title }}" disabled>
+            <textarea name="content" rows="4" disabled>{{ article.content }}</textarea>
+            <!-- Add other fields here as needed -->
+        </form>
+
+        <!-- Start Add Comments Form -->
+        <form method="post" action="{% url 'add_comment' article_id=article.pk %}">
+            {{ form }}
+            {% csrf_token %}
+            <button type="submit">Post</button>
+        </form>
+        <!-- End Add Comments Form -->
+    </div>
+
+    <div class="second-option">
+        <a href="{% url 'index' %}?next={{ next }}">Cancel</a>
+    </div>
+{% endblock %}
